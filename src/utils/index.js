@@ -4,4 +4,6 @@ module.exports = {
   notFoundHandle: require("./notFoundHandle"),
   validateInput: require("./validateInput"),
   wrapController: require("./wrapController"),
+  kafka: require("./kafka"),
+  sendMessageKafka: require("./sendMessageKafka"),
 };

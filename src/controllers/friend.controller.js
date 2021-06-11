@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const HSC = require("http-status-codes");
 const { FriendModel } = require("../models");
+const { sendMessageKafka } = require("../utils");
 
 const read = async (req) => {
   const rs = await FriendModel.find({})

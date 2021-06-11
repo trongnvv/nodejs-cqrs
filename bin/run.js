@@ -1,14 +1,13 @@
-const app = require('../app');
-const http = require('http');
-const debug = require('debug')('demo:server');
-
+const app = require("../app");
+const http = require("http");
+const debug = require("debug")("demo:server");
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '4000');
-app.set('port', port);
+var port = normalizePort(process.env.PORT || "4000");
+app.set("port", port);
 
 /**
  * Create HTTP server.
@@ -21,17 +20,8 @@ var server = http.createServer(app);
  */
 
 server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
-const io = require('socket.io')(server, {
-  cors: {
-    origin: '*',
-  }
-});
-
-require('../src/services/socket').connect(io);
-global.io = io;
+server.on("error", onError);
+server.on("listening", onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -58,20 +48,20 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
+  if (error.syscall !== "listen") {
     throw error;
   }
 
-  const bind = typeof PORT === 'string' ? `Pipe ${PORT}` : `Port ${PORT}`;
+  const bind = typeof PORT === "string" ? `Pipe ${PORT}` : `Port ${PORT}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
+    case "EACCES":
       // eslint-disable-next-line no-console
       console.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
-    case 'EADDRINUSE':
+    case "EADDRINUSE":
       // eslint-disable-next-line no-console
       console.error(`${bind} is already in use`);
       process.exit(1);
@@ -87,10 +77,8 @@ function onError(error) {
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+  const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
   // eslint-disable-next-line no-console
-  console.log(
-    `Listening on http://localhost:${addr.port}`,
-  );
+  console.log(`Listening on http://localhost:${addr.port}`);
   debug(`Listening on ${bind}`);
 }
