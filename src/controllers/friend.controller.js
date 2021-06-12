@@ -16,8 +16,7 @@ const create = async (req) => {
   const friend = await FriendModel.create({ fullName });
   sendMessageKafka(kafkaConfig.syncFriendCreate.TOPIC, {
     index: "service_collection",
-    mongoID: friend._id,
-    fullName,
+    data: { _id: friend._id, fullName },
   });
   req.message = "Created successfully!";
 };

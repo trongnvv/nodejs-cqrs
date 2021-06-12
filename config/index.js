@@ -1,4 +1,5 @@
 module.exports = {
+  ELASTICSEARCH_HOST: process.env.ELASTICSEARCH_HOST || "http://localhost:9200",
   kafka: {
     syncFriendCreate: {
       TOPIC: "sync-friend-create",
