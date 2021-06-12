@@ -24,10 +24,50 @@ services:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     depends_on:
       - elasticsearch
-
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: trongnv
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+    networks:
+      - database
+  zookeeper:
+    image: "bitnami/zookeeper:latest"
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - kafka
+  kafka:
+    image: "bitnami/kafka:latest"
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
+    volumes:
+      - kafka:/bitnami/kafka
+    networks:
+      - kafka
 networks:
   search:
+    driver: bridge
+  database:
+    driver: bridge
+  kafka:
     driver: bridge
 
 volumes:
   elasticsearch:
+  mongodb:
+  kafka:

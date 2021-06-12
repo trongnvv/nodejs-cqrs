@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const HSC = require("http-status-codes");
 const { FriendModel } = require("../models");
 const { sendMessageKafka } = require("../utils");
-
+const { kafka: kafkaConfig } = require("../../config");
 const read = async (req) => {
   const rs = await FriendModel.find({})
     .sort({ createdAt: -1 })
@@ -13,7 +13,12 @@ const read = async (req) => {
 
 const create = async (req) => {
   const { fullName } = req.body;
-  await FriendModel.create({ fullName });
+  const friend = await FriendModel.create({ fullName });
+  sendMessageKafka(kafkaConfig.syncFriendCreate.TOPIC, {
+    index: "service_collection",
+    mongoID: friend._id,
+    fullName,
+  });
   req.message = "Created successfully!";
 };
 

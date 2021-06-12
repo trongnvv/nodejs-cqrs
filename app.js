@@ -15,4 +15,5 @@ app.use(notFoundHandle);
 app.use(errorHandle);
 
 require("./config/db");
+require("./src/jobs")();
 module.exports = app;

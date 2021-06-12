@@ -1,4 +1,6 @@
-const create = (data) => {};
+const create = (data) => {
+  console.log(data);
+};
 
 const edit = (data) => {};
 
